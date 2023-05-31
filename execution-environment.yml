@@ -1,0 +1,24 @@
+---
+version: 1
+
+build_arg_defaults:
+  EE_BASE_IMAGE: 'registry.redhat.io/ansible-automation-platform-23/ee-supported-rhel8'
+
+dependencies:
+  galaxy: requirements.yml
+  python: requirements.txt
+  system: bindep.txt
+
+additional_build_steps:
+  prepend: |
+    RUN echo whoami
+  append:
+    - RUN ls -la /usr/bin
+    # - RUN for ns in 10.6.1.3 185.12.64.1 185.12.64.2; do echo nameserver $ns; done > /etc/resolv.conf
+    - RUN curl -o /tmp/openshift-client-linux.tar.gz 'https://mirror.openshift.com/pub/openshift-v4/amd64/clients/ocp/stable-4.10/openshift-client-linux.tar.gz' && 
+          mkdir -p /tmp/openshift-client && 
+          tar xzvf  /tmp/openshift-client-linux.tar.gz -C /tmp/openshift-client/ && 
+          mv /tmp/openshift-client/{oc,kubectl} /usr/bin/ && 
+          rm -rf /tmp/openshift-client*
+    - RUN curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash &&
+          mv /runner/kustomize /usr/bin

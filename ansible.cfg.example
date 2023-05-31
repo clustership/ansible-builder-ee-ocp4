@@ -1,0 +1,12 @@
+[galaxy]
+server_list = automation_hub
+
+#
+# Find documentation to explain how to get the galaxy auth token
+#
+[galaxy_server.automation_hub]
+url=https://cloud.redhat.com/api/automation-hub/
+auth_url=https://sso.redhat.com/auth/realms/redhat-external/protocol/openid-connect/token
+token=eyXXXXX
+
+localhost ansible_host=localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python
